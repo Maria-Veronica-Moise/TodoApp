@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.Intrinsics.Arm;
-using System.Text;
-using TodoApp.DTOs;
+﻿using TodoApp.DTOs;
 using TodoApp.Models;
 using TodoApp.Repositories;
 
@@ -26,34 +21,10 @@ public class TodoService
 
     public async Task CreateTodoAsync(string title, string description, string assignedTo)
     {
-        //validate input
-        if (string.IsNullOrWhiteSpace(title))
-        {
-            throw new ArgumentException("Cannot be empty", nameof(title));
-        }
-
-        if (string.IsNullOrWhiteSpace(description))
-        {
-            throw new ArgumentException("Cannot be empty", nameof(description));
-        }
-
-        if (string.IsNullOrWhiteSpace(assignedTo))
-        {
-            throw new ArgumentException("Cannot be empty", nameof(assignedTo));
-        }
-
-        //create a new TodoItem
-        var item = new TodoItem
-        {
-            AssignedTo = assignedTo,
-            Title = title,
-            Description = description
-        };
-
-        //add it to _todos
+        var item = new TodoItem(title, description, assignedTo);
+       
         _todos.Add(item);
 
-        //save _todos using the repository
         await _repository.SaveAsync(_todos);
     }
 
@@ -64,13 +35,10 @@ public class TodoService
 
     public async Task CompleteTodoAsync(Guid id)
     {
-        //find the todo by id (SingleOrDefault), similar to Where(x => ...)
         var todo = _todos.Single(x => x.Id == id);
-        //mark it completed => set IsCompleted to true
-        todo.IsCompleted = true;
-        //set CompletedAt // DateTime.Now
-        todo.CompletedAt = DateTime.Now;
-        //save using the repository => same as in create todo
+     
+        todo.MarkAsCompleted();
+       
         await _repository.SaveAsync(_todos);
     }
     public async Task DeleteTodoAsync(Guid id)
