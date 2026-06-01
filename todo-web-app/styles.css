@@ -1,0 +1,78 @@
+body {
+    background-color: rgb(180, 140, 140);
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    padding: 20px;
+}
+h1 {
+    color: #440d41;
+}
+.todo-list {
+    list-style: none;
+    padding: 0;
+}
+.todo-list li {
+    background-color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
+}
+.completed {
+    text-decoration: line-through;
+    color: gray;
+}
+button {
+    background-color: #440d41;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
+}
+button:hover {
+    background-color: #c17bcf;
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+img:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+img {
+    margin: 20px auto;
+    border-radius: 20px;
+    box-shadow: 0 5px 5px rgba(0, 0, 0.8, 0.8);
+}
+table {
+    width: 100%;
+    border-collapse: initial;
+    margin-top: 10px;
+}
+table,
+th,
+td {
+    font-size: medium;
+    border: 2px solid #440d41;
+    border-radius: 20px;
+}
+th,
+td {
+    padding: 10px;
+    text-align: left;
+}
+th {
+    font-family: 'Times New Roman', Times, serif;
+    background-color: #440d41;
+    color: white;
+}
+ol {
+    list-style: upper-alpha;
+    font-size: medium;
+    padding-left: 20px;
+}

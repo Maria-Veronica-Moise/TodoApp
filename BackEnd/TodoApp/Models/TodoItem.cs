@@ -22,6 +22,7 @@ public class TodoItem
         Id = Guid.NewGuid();
         Title = title;
         Description = description;
+        Status = TodoItemStatus.New;
         CreatedAt = DateTime.Now;
         AssignedTo = assignedTo;
     }
@@ -31,8 +32,7 @@ public class TodoItem
 
     public string Description { get; set; } = "";
 
-    public bool IsCompleted { get; private set; }
-
+    public TodoItemStatus Status { get; private set; }
     public DateTime CreatedAt { get; set; }
 
     public DateTime? CompletedAt { get; private set; }
@@ -41,7 +41,7 @@ public class TodoItem
 
     public void MarkAsCompleted()
     {
-        IsCompleted = true;
+        Status = TodoItemStatus.Completed;
         CompletedAt = DateTime.Now;
     }
 }

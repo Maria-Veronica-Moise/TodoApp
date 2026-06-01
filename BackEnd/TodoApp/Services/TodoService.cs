@@ -50,12 +50,12 @@ public class TodoService
     public IEnumerable<TodoItem> GetCompletedTodos()
     {
 
-        var todos = _todos.Where(todo => todo.IsCompleted);
+        var todos = _todos.Where(todo => todo.Status.Equals(TodoItemStatus.Completed));
         return todos;
     }
     public IEnumerable<TodoItem> GetPendingTodos()
     {
-        var todos = _todos.Where(todo => !todo.IsCompleted);
+        var todos = _todos.Where(todo => !todo.Status.Equals(TodoItemStatus.New));
         return todos;
     }
     public IEnumerable<TodoItem> GetTodosForUser(string user)
@@ -81,9 +81,9 @@ public class TodoService
             .Select((x, i) => new TodoSummaryDto
             {
                 Id = x.Id,
-                Order =  i,
+                Order = i,
                 Title = x.Title,
-                IsCompleted = x.IsCompleted
+                IsCompleted = x.Status == TodoItemStatus.Completed
             });
     }
 }
