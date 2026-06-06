@@ -1,8 +1,8 @@
-﻿using TodoApp.DTOs;
-using TodoApp.Models;
-using TodoApp.Repositories;
+﻿using Todo.Api.DTOs;
+using Todo.Api.Models;
+using Todo.Api.Repositories;
 
-namespace TodoApp.Services;
+namespace Todo.Api.Services;
 
 public class TodoService
 {

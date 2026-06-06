@@ -1,4 +1,4 @@
-﻿namespace TodoApp.DTOs;
+﻿namespace Todo.Api.DTOs;
 
 public class TodoSummaryDto 
 {
