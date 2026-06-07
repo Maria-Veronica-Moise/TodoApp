@@ -1,0 +1,14 @@
+export class TodoClient {
+    apiBaseUrl = 'https://localhost:7017'
+
+    getTodos(callback) {
+        fetch(`${this.apiBaseUrl}/api/todo`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => callback(data))
+    }
+}

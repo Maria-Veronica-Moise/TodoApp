@@ -21,4 +21,15 @@ public class TodoController : ControllerBase
         var todos = _todoService.GetAll();
         return Ok(todos);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> SaveTodo([FromBody] TodoDto todo)
+    {
+        return Ok(todo);
+    }
+}
+
+public class TodoDto
+{
+    public string Title { get; set; }
 }

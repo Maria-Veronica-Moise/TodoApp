@@ -1,3 +1,7 @@
+import { TodoClient } from './utils.js'
+
+var client = new TodoClient()
+client.getTodos((todos) => console.log(todos))
 console.log('Hello from JavaScript')
 let todos = [
     {

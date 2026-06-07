@@ -19,9 +19,9 @@ public class TodoService
         _todos = await _repository.LoadAsync();
     }
 
-    public async Task CreateTodoAsync(string title, string description, string assignedTo)
+    public async Task CreateTodoAsync(string title, string assignedTo)
     {
-        var item = new TodoItem(title, description, assignedTo);
+        var item = new TodoItem(title, assignedTo);
        
         _todos.Add(item);
 

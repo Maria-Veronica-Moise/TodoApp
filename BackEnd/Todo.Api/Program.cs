@@ -10,6 +10,16 @@ builder.Configuration
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("LocalFrontend", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5500", "http://127.0.0.1:5500")
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
 
 builder.Services.AddTransient<TodoRepository>();
 builder.Services.AddTransient<TodoService>();
@@ -25,7 +35,7 @@ if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName.Equals("l
         options.RoutePrefix = "swagger";
     });
 }
-
+app.UseCors("LocalFrontend");
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
