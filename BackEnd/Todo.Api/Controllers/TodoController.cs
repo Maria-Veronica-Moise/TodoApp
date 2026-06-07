@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Todo.Api.DTOs;
 using Todo.Api.Services;
 
 namespace Todo.Api.Controllers;
@@ -23,13 +24,9 @@ public class TodoController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> SaveTodo([FromBody] TodoDto todo)
+    public async Task<IActionResult> SaveTodo([FromBody] string title)
     {
-        return Ok(todo);
+        await _todoService.CreateTodoAsync(title);
+        return Created();
     }
-}
-
-public class TodoDto
-{
-    public string Title { get; set; }
 }

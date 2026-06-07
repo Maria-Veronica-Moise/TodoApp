@@ -2,7 +2,7 @@
 
 public class TodoItem
 {
-    public TodoItem(string title, string assignedTo)
+    public TodoItem(string title)
     {
 
         if (string.IsNullOrWhiteSpace(title))
@@ -10,16 +10,10 @@ public class TodoItem
             throw new ArgumentException("Cannot be empty", nameof(title));
         }
 
-        if (string.IsNullOrWhiteSpace(assignedTo))
-        {
-            throw new ArgumentException("Cannot be empty", nameof(assignedTo));
-        }
-
         Id = Guid.NewGuid();
         Title = title;
         Status = TodoItemStatus.New;
         CreatedAt = DateTime.Now;
-        AssignedTo = assignedTo;
     }
 
     public Guid Id { get; set; }
@@ -31,8 +25,6 @@ public class TodoItem
     public DateTime CreatedAt { get; set; }
 
     public DateTime? CompletedAt { get; private set; }
-
-    public string AssignedTo { get; set; } = "";
 
     public void MarkAsCompleted()
     {

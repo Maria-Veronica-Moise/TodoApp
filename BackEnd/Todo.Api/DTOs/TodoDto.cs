@@ -1,6 +1,6 @@
 ﻿namespace Todo.Api.DTOs;
 
-public class TodoSummaryDto 
+public class TodoDto 
 {
     public Guid Id { get; set; }
 
