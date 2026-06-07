@@ -12,13 +12,13 @@ export class TodoClient {
             .then((data) => callback(data))
     }
 
-    saveTodo(todo, callback) {
+    saveTodo(title, callback) {
         fetch(`${this.apiBaseUrl}/api/todo`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(todo),
+            body: title,
         }).then(() => callback())
     }
 }
