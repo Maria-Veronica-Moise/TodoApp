@@ -1,6 +1,12 @@
 import { TodoClient } from './utils.js'
 const client = new TodoClient()
-// client.getTodos((todos) => console.log(todos))
+client.getTodos(getTodosCallback)
+
+function getTodosCallback(data) {
+    todos = data
+    renderTodos()
+}
+
 let todos = []
 const todoList = document.getElementById('todo-list')
 const newTodoInput = document.getElementById('new-todo-input')
