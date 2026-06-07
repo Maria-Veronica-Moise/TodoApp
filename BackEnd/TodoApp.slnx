@@ -1,5 +1,3 @@
 <Solution>
-  <Project Path="Todo.Api/Todo.Api.csproj" Id="5480e493-1209-42db-8d0c-fd86d624b772">
-    <Build Solution="Debug|*" Project="false" />
-  </Project>
+  <Project Path="Todo.Api/Todo.Api.csproj" Id="5480e493-1209-42db-8d0c-fd86d624b772" />
 </Solution>
