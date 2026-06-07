@@ -40,39 +40,24 @@ button:hover {
     margin: 0 auto;
 }
 
-img:hover {
-    transform: scale(1.05);
-    transition: transform 0.3s ease;
+.todo-list p {
+    margin: 5px 0;
 }
-img {
-    margin: 20px auto;
-    border-radius: 20px;
-    box-shadow: 0 5px 5px rgba(0, 0, 0.8, 0.8);
-}
-table {
-    width: 100%;
-    border-collapse: initial;
-    margin-top: 10px;
-}
-table,
-th,
-td {
-    font-size: medium;
-    border: 2px solid #440d41;
-    border-radius: 20px;
-}
-th,
-td {
+input {
     padding: 10px;
-    text-align: left;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
 }
-th {
-    font-family: 'Times New Roman', Times, serif;
-    background-color: #440d41;
-    color: white;
+.search-section,
+.filter-section,
+.create-section {
+    margin-bottom: 20px;
 }
-ol {
-    list-style: upper-alpha;
-    font-size: medium;
-    padding-left: 20px;
+.filter-section button {
+    margin-left: 10px;
+}
+.create-section {
+    display: flex;
+    gap: 10px;
 }

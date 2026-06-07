@@ -1,106 +1,29 @@
-import { TodoClient } from './utils.js'
-
-var client = new TodoClient()
-client.getTodos((todos) => console.log(todos))
-console.log('Hello from JavaScript')
-let todos = [
-    {
-        id: 1,
-        order: 1,
-        title: 'Learn HTML',
-        isCompleted: true,
-    },
-    {
-        id: 2,
-        order: 2,
-        title: 'Learn CSS',
-        isCompleted: false,
-    },
-    {
-        id: 3,
-        order: 3,
-        title: 'Learn JavaScript',
-        isCompleted: false,
-    },
-]
-console.log('Initial todos:', todos)
-
-function sayHello() {
-    console.log('Hello!')
-}
-
-sayHello()
-
-function printTodos(todos) {
-    todos.forEach((todo) => {
-        console.log('Todo: ' + todo.title)
-    })
-}
-printTodos(todos)
-
-todos.forEach((todo) => {
-    if (todo.isCompleted) {
-        console.log(todo.title + 'This todo is completed')
-    } else {
-        console.log(todo.title + 'This todo is not completed')
-    }
-})
-
-let todoStatus = todos.map((todo) => {
-    return {
-        title: todo.title,
-        isCompleted: todo.isCompleted,
-    }
-})
-console.log('Todo status:', todoStatus)
-
-for (let i = 0; i < 5; i++) {
-    console.log(i)
-}
-
-for (let i = 0; i < todos.length; i++) {
-    console.log(`${i}: ${todos[i].title}`)
-}
-
-for (let i = 0; i < todos.length; i++) {
-    if (todos[i].isCompleted === true) {
-        console.log(`${todos[i].title} is completed`)
-    }
-}
-
-function getTodoStatus(todo) {
-    if (todo.isCompleted) {
-        return 'completed'
-    } else {
-        return 'not completed'
-    }
-}
-
-todos.forEach((todo) => {
-    console.log(getTodoStatus(todo))
-})
-
-const addButton = document.getElementById('add-todo-button')
-addButton.addEventListener('click', function () {
-    console.log('Add button clicked!')
-    alert('Todo added!')
-})
-
+let todos = []
 const todoList = document.getElementById('todo-list')
+const newTodoInput = document.getElementById('new-todo-input')
+const addTodoButton = document.getElementById('add-todo-button')
+const searchInput = document.getElementById('search-input')
+const showAllButton = document.getElementById('show-all-button')
+const showActiveButton = document.getElementById('show-active-button')
+const showCompletedButton = document.getElementById('show-completed-button')
+
+// add eventlisteners
+addTodoButton.addEventListener('click', () => {
+    let text = newTodoInput.value.trim()
+    todos.push({ text, completed: false })
+    newTodoInput.value = ''
+    renderTodos()
+})
 
 function renderTodos() {
     todoList.innerHTML = ''
-
-    for (let todo of todos) {
+    todos.forEach((todo, index) => {
         let todoHtml = `
-            <li class="${todo.isCompleted ? 'completed' : ''}">
-                <strong>${todo.order}. ${todo.title}</strong>
-                <span>${todo.isCompleted ? 'Completed' : 'Not completed'}</span>
-            </li>
+        <li>
+            <strong>${index + 1}. ${todo.text}</strong>
+            <span>${todo.completed ? ' (Completed)' : ' (Not Completed)'}</span>
+        </li>
         `
-
         todoList.innerHTML += todoHtml
-    }
+    })
 }
-
-renderTodos()
