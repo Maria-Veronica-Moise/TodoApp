@@ -38,4 +38,15 @@ public class CategoryService
             Name = category.Name
         });
     }
+
+    public async Task DeleteCategoryAsync(Guid id)
+    {
+        var categories = await _repository.LoadAsync();
+
+        var category = categories.Single(x => x.Id == id);
+
+        categories.Remove(category);
+
+        await _repository.SaveAsync(categories);
+    }
 }

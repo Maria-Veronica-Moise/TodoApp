@@ -28,4 +28,12 @@ public class CategoryController : ControllerBase
         await _categoryService.CreateCategoryAsync(name);
         return Created();
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteCategory(Guid id)
+    {
+        await _categoryService.DeleteCategoryAsync(id);
+
+        return NoContent();
+    }
 }
