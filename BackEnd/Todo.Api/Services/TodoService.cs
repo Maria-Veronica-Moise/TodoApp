@@ -7,72 +7,95 @@ namespace Todo.Api.Services;
 public class TodoService
 {
     private readonly TodoRepository _repository;
-    private List<TodoItem> _todos = [];
+    private readonly CategoryRepository _categoryRepository;
 
-    public TodoService(TodoRepository repository)
+    public TodoService(
+        TodoRepository repository,
+        CategoryRepository categoryRepository)
     {
         _repository = repository;
+        _categoryRepository = categoryRepository;
     }
 
-    public async Task InitializeAsync()
+
+    public async Task CreateTodoAsync(string title, Guid categoryId)
     {
-        _todos = await _repository.LoadAsync();
+        var item = new TodoItem(title,categoryId);
+        var todos = await _repository.LoadAsync();
+        todos.Add(item);
+
+        await _repository.SaveAsync(todos);
     }
 
-    public async Task CreateTodoAsync(string title)
+    public async Task<IEnumerable<TodoDto>> GetAll()
     {
-        var item = new TodoItem(title);
-       
-        _todos.Add(item);
+        var todos = await _repository.LoadAsync();
 
-        await _repository.SaveAsync(_todos);
+        return await MapToDto(todos);
     }
 
-    public IEnumerable<TodoDto> GetAll()
+    public async Task StatusTodoAsync(Guid id)
     {
-        return MapToDto(_todos);
-    }
+        var todos = await _repository.LoadAsync();
+        var todo = todos.Single(x => x.Id == id);
 
-    public async Task CompleteTodoAsync(Guid id)
-    {
-        var todo = _todos.Single(x => x.Id == id);
-     
-        todo.MarkAsCompleted();
-       
-        await _repository.SaveAsync(_todos);
+        Console.WriteLine("Current status: {todo.Status}");
+
+        if (todo.Status == TodoItemStatus.Completed)
+        {
+            todo.MarkAsPending();
+            Console.WriteLine("pending");
+        }
+        else 
+        {
+            todo.MarkAsCompleted();
+            Console.WriteLine("completed");
+        }
+
+        await _repository.SaveAsync(todos);
     }
     public async Task DeleteTodoAsync(Guid id)
     {
-        var todo = _todos.Single(x => x.Id == id);
-        _todos.Remove(todo);
-        await _repository.SaveAsync(_todos);
-    }
-    public IEnumerable<TodoDto> GetCompletedTodos()
-    {
+        var todos = await _repository.LoadAsync();
 
-        var todos = _todos.Where(todo => todo.Status.Equals(TodoItemStatus.Completed));
-        return MapToDto(todos);
+        var todo = todos.Single(x => x.Id == id);
+        todos.Remove(todo);
+        await _repository.SaveAsync(todos);
     }
-    public IEnumerable<TodoDto> GetPendingTodos()
+    public async Task<IEnumerable<TodoDto>> GetCompletedTodos()
     {
-        var todos = _todos.Where(todo => !todo.Status.Equals(TodoItemStatus.New));
-        return MapToDto(todos);
+        var todos = await _repository.LoadAsync();
+        todos = todos.Where(todo => todo.Status.Equals(TodoItemStatus.Completed)).ToList();
+        return await MapToDto(todos);
     }
-    
-    public IEnumerable<TodoDto> GetNewestTodos()
+    public async Task<IEnumerable<TodoDto>> GetPendingTodos()
     {
-        var todos = _todos.OrderByDescending(x => x.CreatedAt);
-        return MapToDto(todos);
-    }
-    public IEnumerable<TodoDto> GetOldestTodos()
-    {
-        var todos = _todos.OrderBy(x => x.CreatedAt);
-        return MapToDto(todos);
+        var todos = await _repository.LoadAsync();
+
+        todos = todos.Where(todo => !todo.Status.Equals(TodoItemStatus.Completed)).ToList();
+        return await MapToDto(todos);
     }
 
-    public IEnumerable<TodoDto> GetTodoSummaries()
+    public async Task<IEnumerable<TodoDto>> GetNewestTodos()
     {
-        return _todos
+        var todos = await _repository.LoadAsync();
+
+        todos = todos.OrderByDescending(x => x.CreatedAt).ToList();
+        return await MapToDto(todos);
+    }
+    public async Task<IEnumerable<TodoDto>> GetOldestTodos()
+    {
+        var todos = await _repository.LoadAsync();
+
+        todos = todos.OrderBy(x => x.CreatedAt).ToList();
+        return await MapToDto(todos);
+    }
+
+    public async Task<IEnumerable<TodoDto>> GetTodoSummaries()
+    {
+        var todos = await _repository.LoadAsync();
+
+        return todos
             .Select((x, i) => new TodoDto
             {
                 Id = x.Id,
@@ -82,15 +105,22 @@ public class TodoService
             });
     }
 
-    private IEnumerable<TodoDto> MapToDto(IEnumerable<TodoItem> todoItems)
+    private async Task<IEnumerable<TodoDto>> MapToDto(IEnumerable<TodoItem> todoItems)
     {
-       var todoDtos = todoItems.Select((x, i) => new TodoDto
+        var categories = await _categoryRepository.LoadAsync();
+
+        var todoDtos = todoItems.Select((x, i) => new TodoDto
         {
             Id = x.Id,
             Order = i,
             Title = x.Title,
+            CategoryId = x.CategoryId,
+            CategoryName = categories
+                .SingleOrDefault(c => c.Id == x.CategoryId)
+                .Name?? "Unknown",
             IsCompleted = x.Status == TodoItemStatus.Completed
         });
+
         return todoDtos;
     }
 }

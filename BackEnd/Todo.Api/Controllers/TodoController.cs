@@ -13,20 +13,47 @@ public class TodoController : ControllerBase
     public TodoController(TodoService todoService)
     {
         _todoService = todoService;
-        _todoService.InitializeAsync().GetAwaiter().GetResult();
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var todos = _todoService.GetAll();
+        var todos = await _todoService.GetAll();
         return Ok(todos);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> SaveTodo([FromBody] string title)
+    [HttpGet("active")]
+    public async Task<IActionResult> GetActive()
     {
-        await _todoService.CreateTodoAsync(title);
+        var todos = await _todoService.GetPendingTodos();
+        return Ok(todos);
+    }
+
+    [HttpGet("completed")]
+    public async Task<IActionResult> GetCompleted()
+    {
+        var todos = await _todoService.GetCompletedTodos();
+        return Ok(todos);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> CompleteTodo(Guid id)
+    {
+        await _todoService.StatusTodoAsync(id);
+        return Ok();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> SaveTodo([FromBody] CreateTodoDto dto)
+    {
+        await _todoService.CreateTodoAsync(dto.Title, dto.CategoryId);
         return Created();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult>DeleteTodo(Guid id)
+    {
+        await _todoService.DeleteTodoAsync(id);
+        return Ok();
     }
 }

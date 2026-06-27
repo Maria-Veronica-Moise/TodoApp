@@ -60,4 +60,24 @@ input {
 .create-section {
     display: flex;
     gap: 10px;
+    align-items: center;
+}
+
+.delete-btn {
+    margin-left: 90%;
+    margin-bottom: 0px;
+}
+
+#category-select {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#category-select:focus {
+    outline: none;
+    border-color: #888;
 }

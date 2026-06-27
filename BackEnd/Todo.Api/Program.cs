@@ -24,6 +24,9 @@ builder.Services.AddCors(options =>
 builder.Services.AddTransient<TodoRepository>();
 builder.Services.AddTransient<TodoService>();
 
+builder.Services.AddTransient<CategoryRepository>();
+builder.Services.AddTransient<CategoryService>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName.Equals("loc", StringComparison.OrdinalIgnoreCase))
