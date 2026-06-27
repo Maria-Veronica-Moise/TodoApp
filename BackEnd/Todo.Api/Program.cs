@@ -1,9 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using Todo.Api.Database;
+using Todo.Api.Models;
 using Todo.Api.Repositories;
 using Todo.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var env = builder.Environment;
+var env = builder.Environment.EnvironmentName;
 builder.Configuration
     .AddJsonFile("appsettings.json")
     .AddJsonFile($"appsettings.{env}.json", optional: true);
@@ -26,6 +29,10 @@ builder.Services.AddTransient<TodoService>();
 
 builder.Services.AddTransient<CategoryRepository>();
 builder.Services.AddTransient<CategoryService>();
+
+builder.Services.AddDbContext<TodoContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("TodoDb")));
 
 var app = builder.Build();
 
